@@ -94,8 +94,7 @@
     
         
 
-
-        # user = User.create( first_name: 'rajat', last_name: 'rajat', username: 'rajat23', email: 'rajat@gmail.com', password: 'rajat@22', user_type: 'student', profile_picture: 'rajat.jpg')
+ # user = User.create( first_name: 'rajat', last_name: 'rajat', username: 'rajat23', email: 'rajat@gmail.com', password: 'rajat@22', user_type: 'student', profile_picture: 'rajat.jpg')
     teacher = User.where(user_type: 'teacher')
 
     # student.subscriptions.map(&:course)

@@ -16,27 +16,29 @@ class User < ApplicationRecord
 
 
          
-    def teacher?
-      user_type == 'teacher'
+    # def teacher?
+    #   user_type == 'teacher'
+    # end
+
+    # def student?
+    #   user_type == 'student'
+    # end
+
+    def subscribed_students(course)
+      if teacher?
+        # course.subscriptions.joins(:user).where(users: { user_type: 'student' }).pluck('users.id', 'users.username','users.email')
+        course.subscribtions.map(&:user)
+      else
+        []
+      end
     end
 
-    def student?
-      user_type == 'student'
-    end
+   
 
-  #   def students_subscribed_to_my_courses
-  #     if teacher?
-  #       students = User.joins(:courses).where('courses.teacher.id=?').where(user_type: :student)
-  #     else
-  #       User.none
-  #   end
-  # end
-
-    # used to count subscriber per course
     def subscribers_count_per_course
         if teacher?
         courses.includes(:subscriptions).map do |course|
-          { course_name: course.course_name, subscribtions: course.subscriptions.count }
+          { course_name: course.course_name, subscribtions: course.subscriptions.count  }
           end
         else
           User.none

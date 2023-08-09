@@ -4,9 +4,6 @@ class Subscription < ApplicationRecord
   belongs_to :course
 
 
-
-
-
   after_create :create_notification_for_teacher
 
   validate :user_must_be_student
