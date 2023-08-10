@@ -6,26 +6,15 @@ class User < ApplicationRecord
     has_many :courses , dependent: :destroy
     has_many :notifications ,dependent: :destroy
   
-
-    
     validates :first_name, presence: true
     validates :last_name, presence: true
     validates :email, presence: true, uniqueness: true
     validates :username, presence: true, uniqueness: true
     validate  :validate_email
 
-
-         
-    # def teacher?
-    #   user_type == 'teacher'
-    # end
-
-    # def student?
-    #   user_type == 'student'
-    # end
-
     def subscribed_students(course)
       if teacher?
+        byebug
         # course.subscriptions.joins(:user).where(users: { user_type: 'student' }).pluck('users.id', 'users.username','users.email')
         course.subscribtions.map(&:user)
       else
@@ -33,7 +22,6 @@ class User < ApplicationRecord
       end
     end
 
-   
 
     def subscribers_count_per_course
         if teacher?
@@ -43,7 +31,7 @@ class User < ApplicationRecord
         else
           User.none
         end
-  end
+    end
 
     private
     def validate_email
@@ -51,7 +39,5 @@ class User < ApplicationRecord
           errors.add(:email, 'please enter a valid email')
         end
     end
-
- 
 
 end

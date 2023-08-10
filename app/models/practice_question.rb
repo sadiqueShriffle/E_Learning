@@ -1,5 +1,3 @@
 class PracticeQuestion < ApplicationRecord
- 
-  belongs_to :chapter
-  
-end
+   belongs_to :chapter
+ end

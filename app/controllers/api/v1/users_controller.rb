@@ -5,25 +5,72 @@ class Api::V1::UsersController < ApplicationController
     render json: @user, status:200
   end
 
-  def create
-    user  = User.find_by(id: params[:id])
+  def show
+    user = User.find_by(id: params[:id])
     if user
-      render json: user, status:200
+      render json: user , status:200
     else
-      render json: {errors: "Not Found"}
+      render json: {
+        error: "User Not Found"
+      }
+    end
+  end
+
+
+  def create
+    user = User.new(user_param)
+    if user.save
+      render json: user , status: 200
+    else
+      render json: {
+        error: "Error Creating.."
+      }
     end
   end
 
 
   def update
+    user = User.find_by(id: params[:id])
+    if user
+      user.update(user_param) 
+     render json: "User Record Updated Succesfully" , status: 200
+    
+  else
+    render json: {
+      error: "User Not found"
+    }
+  end
   end
 
-  def delete
+  def destroy
+    user = User.find_by(id: params[:id])
+    if user
+    user.destroy
+    render json: 'User Deleted Successfully' ,status: 200
+    else
+    render json: {
+      error: "User Not Found"
+    } 
+    end
   end
 
-  private
+  private 
   def user_param
-  params.require(:user).permit([:first_name, :uername])
+  params.permit([
+    :first_name,
+    :last_name, 
+    :username,
+    :email,
+    :password,
+    :user_type,
+    :profile_picture
+  ]
+  )
   end
+
+
 
 end
+
+# .require(:user)
+

@@ -2,9 +2,7 @@ class Course < ApplicationRecord
 
   belongs_to :user
   has_many :subscriptions
-
   has_many :chapters 
-
 
   validate :user_must_be_teacher 
   validate :user_must_be_student 
