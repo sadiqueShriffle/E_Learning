@@ -9,6 +9,9 @@ Bundler.require(*Rails.groups)
 module OnlineEducation
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
+    config.api_only = true
+    config.debug_exception_response_format = :api
+
     config.load_defaults 7.0
 
     # Configuration for the application, engines, and railties goes here.
@@ -18,7 +21,7 @@ module OnlineEducation
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.api_only = true
+    
 
   end
 end

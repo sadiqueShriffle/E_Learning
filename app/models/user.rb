@@ -14,9 +14,10 @@ class User < ApplicationRecord
 
     def subscribed_students(course)
       if teacher?
-        byebug
-        # course.subscriptions.joins(:user).where(users: { user_type: 'student' }).pluck('users.id', 'users.username','users.email')
+   
+        course.subscriptions.joins(:user).where(users: { user_type: 'student' }).pluck('users.id', 'users.username','users.email')
         course.subscribtions.map(&:user)
+
       else
         []
       end

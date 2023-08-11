@@ -5,6 +5,7 @@ class Api::V1::CourseController < ApplicationController
   end
 
   def show
+    
   end
 
   def create

@@ -6,9 +6,9 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    user = User.find_by(id: params[:id])
-    if user
-      render json: user , status:200
+    @user = User.find_by(id: params[:id])
+    if @user
+      render json: @user , status:200
     else
       render json: {
         error: "User Not Found"
@@ -18,9 +18,11 @@ class Api::V1::UsersController < ApplicationController
 
 
   def create
-    user = User.new(user_param)
-    if user.save
-      render json: user , status: 200
+    @user = User.new(user_param)
+    if @user.save!
+
+      render json: @user , status: 200
+
     else
       render json: {
         error: "Error Creating.."
@@ -30,9 +32,9 @@ class Api::V1::UsersController < ApplicationController
 
 
   def update
-    user = User.find_by(id: params[:id])
-    if user
-      user.update(user_param) 
+    @user = User.find_by(id: params[:id])
+    if @user
+      @user.update!(user_param) 
      render json: "User Record Updated Succesfully" , status: 200
     
   else
@@ -42,10 +44,12 @@ class Api::V1::UsersController < ApplicationController
   end
   end
 
+
+
   def destroy
-    user = User.find_by(id: params[:id])
-    if user
-    user.destroy
+    @user = User.find_by(id: params[:id])
+    if @user
+    @user.destroy
     render json: 'User Deleted Successfully' ,status: 200
     else
     render json: {
@@ -53,6 +57,7 @@ class Api::V1::UsersController < ApplicationController
     } 
     end
   end
+
 
   private 
   def user_param
@@ -67,9 +72,6 @@ class Api::V1::UsersController < ApplicationController
   ]
   )
   end
-
-
-
 end
 
 # .require(:user)
