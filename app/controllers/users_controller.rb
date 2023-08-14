@@ -1,12 +1,14 @@
-class Api::V1::UsersController < ApplicationController
+class UsersController < ApplicationController
+  before_action :set_user 
 
-  def index
+ def index
     @user = User.all
     render json: @user, status:200
+    # redirect_to courses_url()
   end
 
+
   def show
-    @user = User.find_by(id: params[:id])
     if @user
       render json: @user , status:200
     else
@@ -18,11 +20,9 @@ class Api::V1::UsersController < ApplicationController
 
 
   def create
-    @user = User.new(user_param)
+    @user = User.create(user_param)
     if @user.save!
-
       render json: @user , status: 200
-
     else
       render json: {
         error: "Error Creating.."
@@ -32,7 +32,6 @@ class Api::V1::UsersController < ApplicationController
 
 
   def update
-    @user = User.find_by(id: params[:id])
     if @user
       @user.update!(user_param) 
      render json: "User Record Updated Succesfully" , status: 200
@@ -47,7 +46,6 @@ class Api::V1::UsersController < ApplicationController
 
 
   def destroy
-    @user = User.find_by(id: params[:id])
     if @user
     @user.destroy
     render json: 'User Deleted Successfully' ,status: 200
@@ -60,6 +58,7 @@ class Api::V1::UsersController < ApplicationController
 
 
   private 
+
   def user_param
   params.permit([
     :first_name,
@@ -72,7 +71,9 @@ class Api::V1::UsersController < ApplicationController
   ]
   )
   end
+
+  def set_user
+    @user = User.find_by(id: params[:id])
+  end
+
 end
-
-# .require(:user)
-
