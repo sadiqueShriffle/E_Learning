@@ -1,17 +1,28 @@
 class CoursesController < ApplicationController
   before_action :set_user
-  before_action :check_teacher, only: [:index ,:create ,:update, :destroy , :show]
+  before_action :check_teacher, only: [:create ,:update, :destroy ]
 
   def index
+    if @user.student?
+      @course = Course.all
+      render json: @course
+    else
     @course = @user.courses
     render json: @course
   end
+end
 
+ 
   def show
-    @course = @user.courses.find(params[:id]) 
-    render json: @course
+    if @user.student?
+      render json: @course.slice(:id, :course_name , :description)  # Only expose basic course details
+    else
+    @course = Course.includes(chapters: :practice_questions).find(params[:id])
+    render json: @course, include: { chapters: { include: :practice_questions } }
   end
-
+rescue ActiveRecord::RecordNotFound
+  render json: { error: 'Course not found' }, status:404
+end
   def create
      @course = @user.courses.new(course_param)
     if @course.save
@@ -23,16 +34,15 @@ class CoursesController < ApplicationController
 
 
   def update
-     @course = @user.courses.find(params[:id]) 
-
-    if @course
+    @course = @user.courses.find(params[:id]) 
+      if @course
       @course.update!(course_param) 
-     render json: "User Record Updated Succesfully" , status: 200
-    else
-    render json: {
-      error: "User Not found"
-    }
-  end
+      render json: "User Record Updated Succesfully" , status: 200
+      else
+      render json: {
+        error: "User Not found"
+      }
+      end
   end
 
 
@@ -52,13 +62,8 @@ class CoursesController < ApplicationController
   end
 
   def course_param
-  params.permit([
-    :course_name,
-    :description, 
-  ]
-  )
+  params.require(:course).permit(:course_name, :description, chapter_attributes:[:chapter_name , practice_question_attributes: [:question, :correct_ans]])
   end
-
 
   private
   def check_teacher

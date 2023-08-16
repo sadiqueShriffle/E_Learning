@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_07_093402) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_16_175024) do
   create_table "chapters", force: :cascade do |t|
     t.text "chapter_name"
     t.integer "course_id", null: false
@@ -41,12 +41,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_093402) do
   create_table "practice_questions", force: :cascade do |t|
     t.text "question"
     t.text "correct_ans"
-    t.integer "course_id", null: false
     t.integer "chapter_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chapter_id"], name: "index_practice_questions_on_chapter_id"
-    t.index ["course_id"], name: "index_practice_questions_on_course_id"
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -77,7 +75,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_093402) do
   add_foreign_key "notifications", "courses"
   add_foreign_key "notifications", "users"
   add_foreign_key "practice_questions", "chapters"
-  add_foreign_key "practice_questions", "courses"
   add_foreign_key "subscriptions", "courses"
   add_foreign_key "subscriptions", "users"
 end
