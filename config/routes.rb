@@ -6,13 +6,17 @@ Rails.application.routes.draw do
     resources :courses ,only: [:show , :index , :create , :update ,:destroy]
   end
 
-  resources :courses do
-    resources :chapters ,only: [:show , :index , :create , :update ,:destroy]
-  end 
+  # resources :users do
+  #   resources :subscriptions, only: [:index, :create, :destroy]
+  # end
+
+  # resources :courses do
+  #   resources :chapters ,only: [:show , :index , :create , :update ,:destroy]
+  # end 
    
-  resources :chapters do
-    resources :practice_questions ,only: [:show , :index , :create , :update ,:destroy]
-  end
+  # resources :chapters do
+  #   resources :practice_questions ,only: [:show , :index , :create , :update ,:destroy]
+  # end
 
 
 

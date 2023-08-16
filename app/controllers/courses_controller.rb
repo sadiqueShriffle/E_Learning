@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   before_action :set_user
+  before_action :check_teacher, only: [:index ,:create ,:update, :destroy , :show]
 
   def index
     @course = @user.courses
@@ -12,7 +13,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    @course = @user.courses.new(user_param)
+     @course = @user.courses.new(course_param)
     if @course.save
       render json: @course , status:200
     else
@@ -20,28 +21,37 @@ class CoursesController < ApplicationController
     end
   end
 
+
   def update
-     @course = @course.find(id: params[:id])
+     @course = @user.courses.find(params[:id]) 
+
     if @course
-      @course.update!(user_param) 
+      @course.update!(course_param) 
      render json: "User Record Updated Succesfully" , status: 200
-    
-  else
+    else
     render json: {
       error: "User Not found"
     }
   end
-
   end
 
-  def destory
+
+  def destroy
+    @course = @user.courses.find(params[:id]) 
+    if @course
+      @course.destroy
+    render json: 'Course Deleted Successfully' , status:200
+    else
+      render json: { error: 'Invalid Course Id' } , status:404
+    end
   end
+
 
   def set_user
   @user = User.find_by(id: params[:user_id]) 
-end
+  end
 
-  def user_param
+  def course_param
   params.permit([
     :course_name,
     :description, 
@@ -50,4 +60,16 @@ end
   end
 
 
+  private
+  def check_teacher
+    unless @user.teacher?
+      render json: { error: "Only Teacher is Authorized to perform action"}, status:401
+      
+    end
+  end
+
 end
+
+
+
+

@@ -58,7 +58,6 @@ class UsersController < ApplicationController
 
 
   private 
-
   def user_param
   params.permit([
     :first_name,
