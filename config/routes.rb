@@ -6,6 +6,10 @@ Rails.application.routes.draw do
     resources :courses ,only: [:show , :index , :create , :update ,:destroy]
   end
 
+  resources :users do
+    resources :subscriptions ,only: [:show , :index , :create ]
+  end
+
   # resources :users do
   #   resources :subscriptions, only: [:index, :create, :destroy]
   # end

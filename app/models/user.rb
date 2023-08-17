@@ -2,7 +2,8 @@ class User < ApplicationRecord
 
     enum user_type: {teacher: 'teacher',student: 'student'}
     
-    has_many :subscribed_courses, through: :subscriptions, source: :course
+    has_many :subscriptions
+    # has_many :subscribed_courses, through: :subscriptions, source: :course
     has_many :courses , dependent: :destroy
     has_many :notifications ,dependent: :destroy
   

@@ -23,7 +23,9 @@ end
 rescue ActiveRecord::RecordNotFound
   render json: { error: 'Course not found' }, status:404
 end
+
   def create
+    # puts course_param.inspect
      @course = @user.courses.new(course_param)
     if @course.save
       render json: @course , status:200
@@ -62,7 +64,7 @@ end
   end
 
   def course_param
-  params.require(:course).permit(:course_name, :description, chapter_attributes:[:chapter_name , practice_question_attributes: [:question, :correct_ans]])
+    params.require(:course).permit(:course_name, :description, chapter_attributes:[:chapter_name , practice_question_attributes: [:question, :correct_ans]])
   end
 
   private
