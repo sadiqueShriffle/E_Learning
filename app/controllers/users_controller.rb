@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
   def show
     if @user
+      
       render json: @user , status:200
     else
       render json: {

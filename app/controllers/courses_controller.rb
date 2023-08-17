@@ -19,14 +19,13 @@ end
     else
     @course = Course.includes(chapters: :practice_questions).find(params[:id])
     render json: @course, include: { chapters: { include: :practice_questions } }
+    end
+    rescue ActiveRecord::RecordNotFound
+    render json: { error: 'Course not found' }, status:404
   end
-rescue ActiveRecord::RecordNotFound
-  render json: { error: 'Course not found' }, status:404
-end
 
   def create
-    # puts course_param.inspect
-     @course = @user.courses.new(course_param)
+    @course = @user.courses.new(course_param)
     if @course.save
       render json: @course , status:200
     else
@@ -36,7 +35,7 @@ end
 
 
   def update
-    @course = @user.courses.find(params[:id]) 
+      @course = @user.courses.find(params[:id]) 
       if @course
       @course.update!(course_param) 
       render json: "User Record Updated Succesfully" , status: 200
