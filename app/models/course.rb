@@ -1,13 +1,14 @@
 class Course < ApplicationRecord
 
   belongs_to :user
-  has_many :subscriptions
+  has_many :subscriptions, dependent: :destroy 
   # has_many :subscribers, through: :subscriptions, source: :user
   has_many :chapters, inverse_of: :course
 
-  accepts_nested_attributes_for :chapters, allow_destroy: true
+  accepts_nested_attributes_for :chapters
 
   validate :user_must_be_teacher 
+  validates :course_name , :description , presence: true
   # validate :user_must_be_student 
 
   private

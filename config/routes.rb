@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
+
   resources :users, only: [:index  ,:show, :create , :update , :destroy]
+
 
   resources :users do
     resources :courses ,only: [:show , :index , :create , :update ,:destroy]
@@ -9,6 +11,10 @@ Rails.application.routes.draw do
   resources :users do
     resources :subscriptions ,only: [:show , :index , :create ]
   end
+
+  # resources :subscriptions, only: [] do
+  #   get 'student_subscriptions', on: :collection
+  # end
 
   # resources :users do
   #   resources :subscriptions, only: [:index, :create, :destroy]

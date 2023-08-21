@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_action :set_user
-  before_action :check_teacher, only: [:create ,:update, :destroy ]
+  before_action :check_teacher, only: [:create ,:update, :destroy]
 
   def index
     if @user.student?
@@ -15,7 +15,8 @@ end
  
   def show
     if @user.student?
-      render json: @course.slice(:id, :course_name , :description)  # Only expose basic course details
+      @course = Course.find(params[:id])
+      render json: @course.slice(:id, :course_name, :description)  
     else
     @course = Course.includes(chapters: :practice_questions).find(params[:id])
     render json: @course, include: { chapters: { include: :practice_questions } }
@@ -24,11 +25,14 @@ end
     render json: { error: 'Course not found' }, status:404
   end
 
+
   def create
     @course = @user.courses.new(course_param)
+    byebug
     if @course.save
       render json: @course , status:200
     else
+      byebug
       render json: "Error" , status:404
     end
   end
@@ -63,7 +67,7 @@ end
   end
 
   def course_param
-    params.require(:course).permit(:course_name, :description, chapter_attributes:[:chapter_name , practice_question_attributes: [:question, :correct_ans]])
+    params.permit(:course_name, :description, chapters_attributes:[:course_id,:chapter_name , practice_questions_attributes: [:chapter_id,:question, :correct_ans]])
   end
 
   private

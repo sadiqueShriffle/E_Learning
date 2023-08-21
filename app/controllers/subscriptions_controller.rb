@@ -1,6 +1,6 @@
 class SubscriptionsController < ApplicationController
   before_action :set_user 
-  before_action :find_subscription, only: [:show]
+  before_action :find_subscription, only: [:show ]
   before_action :check_student , only: [:create ,:update, :destroy , :index]
 
 
@@ -12,6 +12,7 @@ class SubscriptionsController < ApplicationController
 
 
   def show
+    # @sub = Subscription.find_by(id: params[:id])
     if @sub.user == @user
       @course = @sub.course
       render json: @course,include: {chapters: {include: :practice_questions}}
@@ -22,17 +23,21 @@ end
 
 
 def create
+  byebug
   @sub = @user.subscriptions.new(subscribe_param)
   if @sub.save
+    byebug
     render json: @sub, status:200
+  
   else
-    render json: "Error while subscribign", status:404
+    render json: "Error while subscribing", status:404
   end
 end
 
   def destroy
     @sub.destroy
   end
+
 
   private
   def set_user

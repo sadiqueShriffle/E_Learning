@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user 
 
- def index
+  def index
     @user = User.all
     render json: @user, status:200
     # redirect_to courses_url()

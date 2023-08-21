@@ -1,3 +1,3 @@
 class PracticeQuestion < ApplicationRecord
-   belongs_to :chapter, inverse_of: :practice_questions
+   belongs_to :chapter
  end
